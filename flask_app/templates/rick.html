@@ -1,0 +1,113 @@
+<!doctype html>
+<head>
+
+	<link type="text/css" rel="stylesheet" href="static/css/rickshaw.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+
+	<script src="http://code.highcharts.com/stock/highstock.js"></script>
+	
+</head>
+<body>
+
+
+<div id="googleStockchart" style="height: 400px"></div>
+
+<script>
+$(function() {
+
+  // *** Emulate get - load data from HTML
+ 
+  // *** remove when loading CSV from file
+
+  var theme = {
+    chart: {
+      height: 200
+    },
+    title: {
+      text: ''
+    },
+    credits: {
+      enabled: false
+    },
+    global: {
+      useUTC: false
+    }
+  }
+  Highcharts.setOptions(theme);
+
+  $.get('static/data/train.csv', function(csvFile) {
+    var parsedCSV = parseCSVData(csvFile),
+      data = parsedCSV.data,
+      iter = 0,
+      len = parsedCSV.len;
+
+    // Create the chart
+    $('#googleStockchart').highcharts('StockChart', {
+      chart: {
+        animation: Highcharts.svg,
+        type: 'spline',
+
+        events: {
+          load: function() {
+            var series = this.series[0],
+              myInterval = setInterval(function() {
+                console.log('run i', iter); //see each run in console
+                if (iter < len) {
+                  series.addPoint([(new Date()).getTime(), data[iter]], true, true);
+                  iter++;
+                } else {
+                  clearInterval(myInterval);
+                }
+              }, 1000);
+          }
+        }
+      },
+
+      navigator: {
+        enabled: false
+      },
+
+      series: [{
+        name: 'Setting1',
+        data: (function() {
+          // generate an array of random data
+          var data = [],
+            time = (new Date()).getTime(),
+            i;
+
+          for (i = -19; i <= 0; i += 1) {
+            data.push({
+              x: time + i * 1000,
+              y: Math.random()
+            });
+          }
+          return data;
+        }()),
+        tooltip: {
+          valueDecimals: 2
+        }
+      }]
+    });
+  });
+});
+
+function parseCSVData(csvFile) {
+  var data = [],
+  lines = csvFile.split("\n");
+
+  $.each(lines, function(lineNumber, line) {
+    var fields = line.split(",");
+    var value = parseFloat(fields[0]);
+    data.push(value);
+  })
+
+  return {
+    data: data,
+    len: data.length
+  }
+}
+
+</script>
+
+</body>

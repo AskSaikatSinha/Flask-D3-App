@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Data from CSV file</title>
+
+
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"/></script>
+<script type='text/javascript' src="static/js/c3.min.js"></script> <!-- This one allows for oninit -->
+<link href="static/css/c3.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+<div id="chart-line"></div>
+
+<script>
+var chart = c3.generate({
+    bindto: '#chart-line',
+	
+    data: {
+        url: 'static/data/trainp.json',
+        mimeType: 'json',
+        keys: {
+            x: 'Series',
+            value: ['Setting1']
+        },
+        type: 'line'
+    },
+	interaction: {
+  enabled: true
+},
+axis: {
+        x: {
+            
+            tick: {
+                count: 4,
+				values: ['1000', '2000','3000','4000'],
+            }
+        }
+    },
+    subchart: {
+        show: true
+    }
+	
+});   
+</script>
+
+</body>
+</html>

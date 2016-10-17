@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>NY Food Grades</title>
+    <link rel="stylesheet" href="/static/css/simplex_bootstrap.min.css">
+    <link href="/static/css/metricsgraphics.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Distribution of NY Food Grades</h1>
+        <p class="lead">All Cuisine Types</p>
+        <div id='food-line-chart'></div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+    <script src="/static/js/metricsgraphics.min.js"></script>
+    <script>
+    d3.csv('/static/data/train.csv', function(data) {
+        MG.data_graphic({
+            data: data,
+            width: 650,
+            height: 420,
+			right: 40,
+			left: 100,
+			bottom: 50,
+			y_extended_ticks: true,
+            target: '#food-line-chart',
+            chart_type: 'line',
+            bar_orientation: 'vertical',
+            y_accessor: 'Setting1',
+            x_accessor: 'Series',
+			x_label: 'Series',
+			y_label: 'Setting1',
+        })
+    })
+    </script>
+</body>
+
+</html>
